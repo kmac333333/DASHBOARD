@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.1.3
-# Sync'd to dashboard release: v3.6.10
+# File version: v1.2.6
+# Sync'd to dashboard release: v3.8.3
 # Description: DashboardView — manages tile layout and unified styling
 #
 # Features:
@@ -15,21 +15,23 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Tile factory for easy extension of new tile types
 # ✅ Safe loading and clearing of tiles from configuration
 # ✅ Responsive row stretching for clean bottom alignment
+# ✅ Handles external layout change prompt from controller
 #
-# Feature Update: v1.1.3
-# ✅ Tile factory now passes dispatcher to all tiles (required for MQTT sinks)
+# Feature Update: v1.2.6
+# ✅ Added on_external_layout_change() — prompt and reload on controller signal
 # ================================
 """
 
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QGridLayout
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QScrollArea, QGridLayout, QMessageBox
 from PyQt6.QtCore import QSize
 
 from support.myLOG2 import LOG3
 from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
+from config import load_config
 
 
-# Tile factory — pass dispatcher to all tiles
+# Tile factory
 def create_tile(config, dispatcher):
     tile_type = config.get("type", "simple_text")
     if tile_type == "simple_text":
@@ -78,8 +80,23 @@ class DashboardView(QWidget):
         self.grid.setContentsMargins(30, 30, 30, 30)
         self.scroll_area.setWidget(self.container)
 
+    def on_external_layout_change(self):
+        """Called by controller when external change detected."""
+        LOG3(400 + 61, "External layout change detected — prompting user")
+        reply = QMessageBox.question(
+            self,
+            "Layout Changed",
+            "The layout file has been modified externally.\n\nReload layout?",
+            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+            QMessageBox.StandardButton.Yes
+        )
+        if reply == QMessageBox.StandardButton.Yes:
+            LOG3(400 + 62, "User confirmed reload — rebinding tiles")
+            new_config = load_config()
+            self.load_config(new_config)
+
     def load_config(self, configs):
-        LOG3(400 + 1, f"Loading {len(configs)} tiles")
+        LOG3(400 + 1, f"Loading {len(configs)} tiles — rebinding in progress")
         self._clear_layout()
         self.tiles.clear()
 
@@ -88,6 +105,15 @@ class DashboardView(QWidget):
             self.tiles[config["id"]] = tile
 
         self._layout_tiles()
+        LOG3(400 + 2, "Rebinding complete — layout reloaded")
+
+    def export_current_config(self):
+        current = []
+        for tile_id, tile in self.tiles.items():
+            config = tile.config.copy()
+            config["id"] = tile_id
+            current.append(config)
+        return current
 
     def _clear_layout(self):
         while self.grid.count():

@@ -5,24 +5,20 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # view/tiles/simple_text.py
 # ================================
-# File version: v1.0.6
-# Sync'd to dashboard release: v3.6.17
-# Description: SimpleTextTile — single-value display tile with header
+# File version: v1.0.8
+# Sync'd to dashboard release: v3.7.0
+# Description: SimpleTextTile — single-value display tile
 #
 # Features:
-# ✅ Displays a single value in large centered text
+# ✅ Large centered value display
 # ✅ Gradient header with hex ID and editable title
-# ✅ Inherits unified styling from DashboardView (no local styling)
-# ✅ Supports "value" signal via dispatcher callback registration
-# ✅ Title editable via click
-#
-# Feature Update: v1.0.6
-# ✅ Fixed MQTT formatting — converts payload to float before applying format
+# ✅ Registers MQTT callback with dispatcher for live updates
+# ✅ Static initial value support
 # ================================
 """
 
 from PyQt6.QtWidgets import QVBoxLayout, QHBoxLayout, QLabel, QWidget, QInputDialog
-from PyQt6.QtCore import Qt, QSize, pyqtSignal
+from PyQt6.QtCore import Qt, QSize
 from PyQt6.QtGui import QCursor
 
 from support.myLOG2 import LOG3
@@ -88,24 +84,24 @@ class SimpleTextTile(BaseTile):
 
         layout.addWidget(self.body_label, stretch=1)
 
-        # Register MQTT callback if present
+        # Register MQTT callback if bound
         bindings = config.get("bindings", {})
         value_binding = bindings.get("value", {})
         if value_binding.get("type") == "mqtt":
             topic = value_binding["topic"]
             key = f"mqtt:{topic}"
             format_str = value_binding.get("format", "{}")
-            def mqtt_callback(payload):
+            def update_callback(payload):
                 try:
                     fahrenheit = float(payload)
                     celsius = (fahrenheit - 32) * 5 / 9
                     formatted = format_str.format(fahrenheit, celsius)
                 except ValueError:
-                    formatted = payload  # Fallback
+                    formatted = payload
                 self.body_label.setText(formatted)
-            self.dispatcher.register_cb(key, mqtt_callback)
+            self.dispatcher.register_cb(key, update_callback)
 
-        # Static value (initial display)
+        # Static value
         if value_binding.get("type") == "static":
             self.body_label.setText(value_binding.get("value", "—"))
 

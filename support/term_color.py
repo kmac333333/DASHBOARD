@@ -39,7 +39,7 @@ BW_ = co
 c = {
      0 : ci_green,
      100 : ci_blue,
-     200 : ci_grey,
+     200 : ci_yellow,
      300 : ci_light_blue,
      400 : ci_purple,
      500 : ci_yellow,

@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # view/tiles/multiline.py
 # ================================
-# File version: v1.1.1
-# Sync'd to dashboard release: v3.6.6
+# File version: v1.1.2
+# Sync'd to dashboard release: v3.7.1
 # Description: MultilineTile — sink tile for up to 5 lines of labeled data
 #
 # Features:
@@ -17,8 +17,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Title editable via click
 # ✅ Registers callbacks with dispatcher for data updates (sink pattern)
 #
-# Feature Update: v1.1.1
-# ✅ Added explicit on_lineX_update methods for dispatcher callback registration
+# Feature Update: v1.1.2
+# ✅ Fixed version bump and minor cleanup
 # ================================
 """
 
@@ -119,25 +119,8 @@ class MultilineTile(BaseTile):
             prop = props[line_num - 1]
             if prop:
                 key = f"system:{prop}"
-                method_name = f"on_line{line_num}_update"
-                callback = getattr(self, method_name)
+                callback = lambda v, idx=line_num - 1: self.value_labels[idx].setText(v)
                 self.dispatcher.register_cb(key, callback)
-
-    # Explicit callback methods for dispatcher
-    def on_line1_update(self, value: str):
-        self.value_labels[0].setText(value)
-
-    def on_line2_update(self, value: str):
-        self.value_labels[1].setText(value)
-
-    def on_line3_update(self, value: str):
-        self.value_labels[2].setText(value)
-
-    def on_line4_update(self, value: str):
-        self.value_labels[3].setText(value)
-
-    def on_line5_update(self, value: str):
-        self.value_labels[4].setText(value)
 
     def edit_title(self, event):
         new_title, ok = QInputDialog.getText(self, "Edit Title", "Title:", text=self.config["title"])

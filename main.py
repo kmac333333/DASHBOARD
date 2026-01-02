@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # main.py
 # ================================
-# File version: v1.7.0
-# Sync'd to dashboard release: v3.6.7
+# File version: v1.7.1
+# Sync'd to dashboard release: v3.6.8
 # Description: Application entry point — bootstraps the dashboard
 #
 # Features:
@@ -16,9 +16,6 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.7.0
-# ✅ Restored "Force Default Layout" menu item (Ctrl+D) — deletes layout.json
-# ================================
 """
 
 import sys
@@ -89,8 +86,8 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.6.7 – January 01, 2026")
-        self.setGeometry(100, 100, 1600, 1000)
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.6.8 – January 02, 2026")
+        self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)
 
@@ -178,7 +175,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "About",
-            "Dynamic MQTT Dashboard\nv3.6.7\nForce Default Layout restored"
+            "Dynamic MQTT Dashboard\nv3.6.8\nStable release"
         )
 
     def closeEvent(self, event):
