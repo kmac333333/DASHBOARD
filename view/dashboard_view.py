@@ -6,7 +6,7 @@ Created on Thu Jan  3 16:04:05 2026
 # view/dashboard_view.py
 # ================================
 # File version: v1.3.3
-# Sync'd to dashboard release: v3.7.1
+# Sync'd to dashboard release: v3.8.7
 # Description: DashboardView — manages tile layout and unified styling
 #
 # Features:
@@ -18,7 +18,7 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Handles external layout change prompt from controller
 #
 # Feature Update: v1.3.3
-# ✅ All inline styling replaced with imports from style.py
+# ✅ Added support for 'system_out' tile type in factory
 # ================================
 """
 
@@ -29,11 +29,12 @@ from support.myLOG2 import LOG3
 from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
 from view.tiles.dual_text import DualTextTile
+from view.tiles.system_out import SystemOutTile  # ← New import
 from config import load_config
 from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE, SCROLL_AREA_STYLE
 
 
-# Tile factory
+# Tile factory — now supports system_out
 def create_tile(config, dispatcher):
     tile_type = config.get("type", "simple_text")
     if tile_type == "simple_text":
@@ -42,6 +43,8 @@ def create_tile(config, dispatcher):
         return MultilineTile(config, dispatcher)
     elif tile_type == "dual_text":
         return DualTextTile(config, dispatcher)
+    elif tile_type == "system_out":
+        return SystemOutTile(config, dispatcher)
     else:
         LOG3(400 + 50, f"Unknown tile type: {tile_type} — falling back to simple_text")
         return SimpleTextTile(config, dispatcher)

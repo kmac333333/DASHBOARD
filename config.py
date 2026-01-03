@@ -1,19 +1,22 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  3 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # config.py
 # ================================
-# File version: v1.0.1
-# Sync'd to dashboard release: v3.5.0-alpha
+# File version: v1.0.3
+# Sync'd to dashboard release: v3.8.7
 # Description: Default configuration and config file handling
 #
 # Features:
-# ✅ Holds DEFAULT_CONFIG with all current tiles (including multiline system health)
+# ✅ Holds DEFAULT_CONFIG with all current tiles (including system_out)
 # ✅ Provides load_config() with safe fallback to defaults
-# ✅ Provides save_config() for future "Save Layout" functionality
+# ✅ Provides save_config() for "Save Layout" functionality
 # ✅ Handles missing/invalid layout.json gracefully
+#
+# Feature Update: v1.0.3
+# ✅ Added system_out tile to DEFAULT_CONFIG (full width at bottom)
 # ================================
 """
 
@@ -69,6 +72,14 @@ DEFAULT_CONFIG = [
                 "label": "Outdoor"
             }
         }
+    },
+    {
+        "id": "system-out",
+        "type": "system_out",
+        "hex_id": "DEBUG",
+        "title": "System Output",
+        "size": [2, 8],  # Full width (8 columns), 2 rows high
+        "bindings": {}
     }
 ]
 

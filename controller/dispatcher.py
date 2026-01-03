@@ -1,23 +1,24 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  3 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # controller/dispatcher.py
 # ================================
 # File version: v1.9.3
-# Sync'd to dashboard release: v3.8.4
+# Sync'd to dashboard release: v3.8.6
 # Description: DataDispatcher — central data bus for inbound sources
 #
 # Features:
 # ✅ Manages MQTT client lifecycle and message routing
 # ✅ Creates and manages SystemPropertySource instances
-# ✅ register_cb(key, callback) — appends callbacks (multi-sink support)
-# ✅ Emits data to all registered callbacks
+# ✅ register_cb(key, callback) — appends callbacks for multi-sink support
+# ✅ Emits data to registered callbacks
 # ✅ Graceful shutdown
+# ✅ dump_registrations() — detailed dump to system out tile
 #
 # Feature Update: v1.9.3
-# ✅ register_cb now appends callbacks — supports multiple tiles per topic
+# ✅ Fleshed out dump_registrations() with formatted output to system out tile
 # ================================
 """
 
@@ -39,7 +40,7 @@ class DataDispatcher(QObject):
         """Register a callback for a named data channel — appends for multi-sink."""
         if key not in self.callbacks:
             self.callbacks[key] = []
-        if callback not in self.callbacks[key]:  # Avoid exact duplicates
+        if callback not in self.callbacks[key]:
             self.callbacks[key].append(callback)
             LOG3(200 + 5, f"Appended callback for channel '{key}'")
         else:
@@ -55,9 +56,7 @@ class DataDispatcher(QObject):
 
     def start(self):
         LOG3(200 + 1, "Dispatcher starting")
-														 
         self.mqtt_client.register_cb("message_received", self.on_mqtt_message)
-																				
         self.mqtt_client.start()
 
     def bind_config(self, configs):
@@ -109,12 +108,31 @@ class DataDispatcher(QObject):
     def on_mqtt_message(self, topic, payload):
         LOG3(200 + 50, f"Dispatcher received MQTT: {topic} -> {payload}")
         key = f"mqtt:{topic}"
-  #      try:
-  #          fahrenheit = float(payload)
-  #          celsius = (fahrenheit - 32) * 5 / 9
-  #          self._emit(key, (fahrenheit, celsius))
-  #      except ValueError:
         self._emit(key, payload)
+
+    def dump_registrations(self):
+        """Dump current callback registrations to system out tile."""
+        dump_lines = [
+            "=== Dispatcher Registration Dump ===",
+            f"Total channels: {len(self.callbacks)}",
+            ""
+        ]
+
+        if not self.callbacks:
+            dump_lines.append("No callbacks registered.")
+        else:
+            for key, cbs in self.callbacks.items():
+                dump_lines.append(f"Channel: {key}")
+                dump_lines.append(f"  Callbacks: {len(cbs)}")
+                for i, cb in enumerate(cbs, 1):
+                    dump_lines.append(f"    [{i}] {cb}")
+                dump_lines.append("")
+
+        dump_lines.append("=== End Dump ===")
+        dump_text = "\n".join(dump_lines)
+
+        # Emit to system out tile
+        self._emit("debug:system_out", dump_text)
 
     def stop(self):
         LOG3(200 + 70, "Dispatcher stopping")

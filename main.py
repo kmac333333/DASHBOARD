@@ -1,23 +1,24 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  3 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # main.py
 # ================================
-# File version: v1.7.3
-# Sync'd to dashboard release: v3.7.0
+# File version: v1.7.4
+# Sync'd to dashboard release: v3.8.6
 # Description: Application entry point — bootstraps the dashboard
 #
 # Features:
 # ✅ Minimal bootstrap: creates QApplication, sets dark palette
 # ✅ Instantiates DashboardController
-# ✅ Builds menu: Exit, About, Save Layout, Add Static Tile, Force Default Layout
+# ✅ Builds menu: File (Save Layout, Force Default Layout, Exit), Tile (Add Static Tile), Help (About)
+# ✅ Debug menu with "Dump Registrations" item (plumbing)
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.7.3
-# ✅ Menu bar styling now imported from style.py (single file styling)
+# Feature Update: v1.7.4
+# ✅ Added Debug menu and "Dump Registrations" item (calls dispatcher.dump_registrations)
 # ================================
 """
 
@@ -90,7 +91,7 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.8.0 – January 02, 2026")
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.8.6 – January 03, 2026")
         self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)
@@ -105,9 +106,10 @@ class MainWindow(QMainWindow):
         self.controller.initialize()
 
     def create_menu(self):
-        # Menu bar styling now from style.py
+											
         self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
+        # File menu
         file_menu = self.menu_bar.addMenu("File")
 
         save_action = file_menu.addAction("Save Layout")
@@ -124,10 +126,17 @@ class MainWindow(QMainWindow):
         exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
 
+        # Tile menu
         tile_menu = self.menu_bar.addMenu("Tile")
         add_action = tile_menu.addAction("Add Static Tile")
         add_action.triggered.connect(self.add_static_tile)
 
+        # Debug menu (plumbing)
+        debug_menu = self.menu_bar.addMenu("Debug")
+        dump_action = debug_menu.addAction("Dump Registrations")
+        dump_action.triggered.connect(self.controller.dispatcher.dump_registrations)
+
+        # Help menu
         help_menu = self.menu_bar.addMenu("Help")
         about_action = help_menu.addAction("About")
         about_action.triggered.connect(self.show_about)
@@ -171,7 +180,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "About",
-            "Dynamic MQTT Dashboard\nv3.7.0\nStyling centralized"
+            "Dynamic Indexed MQTT Dashboard\nv3.8.6\nDebug plumbing added"
         )
 
     def closeEvent(self, event):
