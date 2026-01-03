@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # main.py
 # ================================
-# File version: v1.7.1
-# Sync'd to dashboard release: v3.6.8
+# File version: v1.7.2
+# Sync'd to dashboard release: v3.7.4
 # Description: Application entry point — bootstraps the dashboard
 #
 # Features:
@@ -16,6 +16,9 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
+# Feature Update: v1.7.2
+# ✅ Fixed double reload after Force Default Layout — stops watcher/polling
+# ================================
 """
 
 import sys
@@ -86,7 +89,7 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.6.8 – January 02, 2026")
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.7.4 – January 02, 2026")
         self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)
@@ -147,7 +150,7 @@ class MainWindow(QMainWindow):
         reply = QMessageBox.question(
             self,
             "Force Default Layout",
-            "This will delete layout.json and reload the built-in default layout on next start.\n\nContinue?",
+            "This will delete layout.json and reload the built-in default layout.\n\nContinue?",
             QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
             QMessageBox.StandardButton.No
         )
@@ -155,7 +158,11 @@ class MainWindow(QMainWindow):
             try:
                 if os.path.exists(CONFIG_FILE):
                     os.remove(CONFIG_FILE)
-                    QMessageBox.information(self, "Reset", "layout.json deleted — defaults will load on restart")
+                    # Stop watcher to prevent double trigger
+                    self.controller.stop_file_watcher()
+                    QMessageBox.information(self, "Reset", "layout.json deleted — defaults loaded")
+                    # Immediate reload
+                    self.view.load_config(load_config())
                 else:
                     QMessageBox.information(self, "Reset", "No layout.json found — already using defaults")
             except Exception as e:
@@ -175,7 +182,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "About",
-            "Dynamic MQTT Dashboard\nv3.6.8\nStable release"
+            "Dynamic MQTT Dashboard\nv3.7.4\nFixed double reload on Force Default"
         )
 
     def closeEvent(self, event):

@@ -5,21 +5,21 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # controller/dashboard_controller.py
 # ================================
-# File version: v1.0.4
-# Sync'd to dashboard release: v3.8.5
+# File version: v1.0.6
+# Sync'd to dashboard release: v3.8.0
 # Description: DashboardController — orchestrates startup, config loading, file watching, and shutdown
 #
 # Features:
 # ✅ Initializes the dashboard on startup
 # ✅ Loads configuration with fallback to defaults
 # ✅ Creates and starts the DataDispatcher
-# ✅ Binds sources from config (no tile_widgets needed)
+# ✅ Binds sources from config (configs only signature)
 # ✅ Watches layout.json for external changes (controller domain)
 # ✅ Prompts view for reload on change
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.0.4
-# ✅ Fixed bind_config call — now matches current signature (configs only)
+# Feature Update: v1.0.6
+# ✅ Added stop_file_watcher() to cleanly stop watcher after Force Default
 # ================================
 """
 
@@ -50,8 +50,7 @@ class DashboardController(QObject):
         LOG3(300 + 1, "Controller initializing")
         self.load_layout()
         self.dispatcher.start()
-        # Correct call — bind_config now takes only configs
-        self.dispatcher.bind_config(load_config())
+        self.dispatcher.bind_config(load_config())  # Correct signature — configs only
 
     def load_layout(self):
         config = load_config()
@@ -65,6 +64,18 @@ class DashboardController(QObject):
             self.watcher.addPath(str(config_path.absolute()))
             self.watcher.fileChanged.connect(self.on_file_changed)
             LOG3(300 + 60, f"QFileSystemWatcher active on {CONFIG_FILE}")
+
+    def stop_file_watcher(self):
+        """Stop the file watcher to prevent duplicate triggers after Force Default."""
+        if hasattr(self, 'watcher'):
+            try:
+                self.watcher.fileChanged.disconnect()
+            except TypeError:
+                pass  # Already disconnected
+            paths = self.watcher.files()
+            if paths:
+                self.watcher.removePaths(paths)
+            LOG3(300 + 63, "File watcher stopped after Force Default")
 
     def on_file_changed(self, path):
         LOG3(300 + 61, "External change detected in layout.json")

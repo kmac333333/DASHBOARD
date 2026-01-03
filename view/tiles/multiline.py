@@ -5,20 +5,21 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # view/tiles/multiline.py
 # ================================
-# File version: v1.1.2
+# File version: v1.1.4
 # Sync'd to dashboard release: v3.7.1
 # Description: MultilineTile — sink tile for up to 5 lines of labeled data
 #
 # Features:
 # ✅ Supports 5 lines with auto-generated labels from bound prop
 # ✅ Label + value layout with spacing and alignment
-# ✅ Gradient header with hex ID and editable title
-# ✅ Inherits styling from DashboardView
+# ✅ Gradient header imported from style.py
+# ✅ All text styling imported from style.py
+# ✅ Inherits unified styling from DashboardView
 # ✅ Title editable via click
 # ✅ Registers callbacks with dispatcher for data updates (sink pattern)
 #
-# Feature Update: v1.1.2
-# ✅ Fixed version bump and minor cleanup
+# Feature Update: v1.1.4
+# ✅ Full styling isolation — no inline setStyleSheet calls
 # ================================
 """
 
@@ -28,6 +29,17 @@ from PyQt6.QtGui import QCursor
 
 from support.myLOG2 import LOG3
 from .base import BaseTile
+from style import (
+    HEADER_GRADIENT,
+    TEXT_HEADER,
+    TEXT_SUBTITLE,
+    TEXT_SECONDARY,
+    TEXT_PRIMARY,
+    FONT_HEX_ID,
+    FONT_TITLE,
+    FONT_LABEL,
+    FONT_VALUE
+)
 
 
 class MultilineTile(BaseTile):
@@ -44,19 +56,14 @@ class MultilineTile(BaseTile):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
 
-        # Header
+        # Header — gradient from style.py
         header_container = QWidget()
         header_container.setFixedHeight(90)
         header_layout = QHBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
         header_layout.setSpacing(10)
 
-        header_container.setStyleSheet("""
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                        stop:0 #6366f1,
-                                        stop:0.85 #4f46e5,
-                                        stop:1 #1e293b);
-        """)
+        header_container.setStyleSheet(HEADER_GRADIENT)
 
         title_container = QWidget()
         title_layout = QVBoxLayout(title_container)
@@ -65,11 +72,11 @@ class MultilineTile(BaseTile):
 
         self.hex_id_label = QLabel(config["hex_id"])
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        self.hex_id_label.setStyleSheet("color: white; font-size: 40px; font-weight: bold;")
+        self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config["title"])
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
-        self.title_label.setStyleSheet("color: rgba(255, 255, 255, 180); font-size: 20px;")
+        self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
         self.title_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.title_label.mousePressEvent = self.edit_title
@@ -100,11 +107,11 @@ class MultilineTile(BaseTile):
             prop = props[i]
             label_text = prop.replace("_", " ").title() if prop else f"Line {i+1}"
             label = QLabel(label_text + ":")
-            label.setStyleSheet("color: #94a3b8; font-size: 20px; font-weight: bold;")
+            label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}")
             h_layout.addWidget(label)
 
             value = QLabel("—")
-            value.setStyleSheet("color: #e2e8f0; font-size: 22px;")
+            value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_VALUE}")
             value.setWordWrap(True)
             h_layout.addWidget(value, stretch=1)
 

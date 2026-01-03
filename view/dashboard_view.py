@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.2.6
-# Sync'd to dashboard release: v3.8.3
+# File version: v1.3.0
+# Sync'd to dashboard release: v3.7.0
 # Description: DashboardView — manages tile layout and unified styling
 #
 # Features:
@@ -17,8 +17,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Responsive row stretching for clean bottom alignment
 # ✅ Handles external layout change prompt from controller
 #
-# Feature Update: v1.2.6
-# ✅ Added on_external_layout_change() — prompt and reload on controller signal
+# Feature Update: v1.3.0
+# ✅ All styling imported from top-level style.py
 # ================================
 """
 
@@ -29,6 +29,7 @@ from support.myLOG2 import LOG3
 from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
 from config import load_config
+from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE
 
 
 # Tile factory
@@ -47,19 +48,10 @@ class DashboardView(QWidget):
     def __init__(self, dispatcher):
         super().__init__()
         self.dispatcher = dispatcher
-        self.setStyleSheet("""
-            background-color: #0f172a;
 
-            SimpleTextTile, MultilineTile {
-                background: #1e293b;
-                border-radius: 18px;
-                border: 1px solid #334155;
-            }
-            SimpleTextTile:hover, MultilineTile:hover {
-                border: 1px solid #6366f1;
-                background: #232e41;
-            }
-        """)
+        # All styling from style.py
+        self.setStyleSheet(DASHBOARD_STYLE + UNIFIED_TILE_STYLE)
+
         self.tiles = {}
 
         self.setup_ui()
@@ -108,6 +100,7 @@ class DashboardView(QWidget):
         LOG3(400 + 2, "Rebinding complete — layout reloaded")
 
     def export_current_config(self):
+        """Return a list of current tile configurations for saving."""
         current = []
         for tile_id, tile in self.tiles.items():
             config = tile.config.copy()

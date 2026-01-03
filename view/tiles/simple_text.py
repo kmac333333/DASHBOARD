@@ -1,19 +1,22 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  2 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/simple_text.py
 # ================================
-# File version: v1.0.8
+# File version: v1.1.0
 # Sync'd to dashboard release: v3.7.0
-# Description: SimpleTextTile — single-value display tile
+# Description: SimpleTextTile — single-value display tile with header
 #
 # Features:
-# ✅ Large centered value display
-# ✅ Gradient header with hex ID and editable title
-# ✅ Registers MQTT callback with dispatcher for live updates
-# ✅ Static initial value support
+# ✅ Displays a single value in large centered text
+# ✅ All styling imported from style.py
+# ✅ Supports "value" signal via dispatcher callback registration
+# ✅ Title editable via click
+#
+# Feature Update: v1.1.0
+# ✅ Full styling isolation — no inline setStyleSheet calls
 # ================================
 """
 
@@ -23,6 +26,15 @@ from PyQt6.QtGui import QCursor
 
 from support.myLOG2 import LOG3
 from .base import BaseTile
+from style import (
+    HEADER_GRADIENT,
+    FONT_HEX_ID,
+    FONT_TITLE,
+    FONT_BODY,
+    TEXT_HEADER,
+    TEXT_SUBTITLE,
+    TEXT_PRIMARY
+)
 
 
 class SimpleTextTile(BaseTile):
@@ -46,12 +58,7 @@ class SimpleTextTile(BaseTile):
         header_layout.setContentsMargins(20, 8, 20, 8)
         header_layout.setSpacing(10)
 
-        header_container.setStyleSheet("""
-            background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
-                                        stop:0 #6366f1,
-                                        stop:0.85 #4f46e5,
-                                        stop:1 #1e293b);
-        """)
+        header_container.setStyleSheet(HEADER_GRADIENT)
 
         title_container = QWidget()
         title_layout = QVBoxLayout(title_container)
@@ -60,11 +67,11 @@ class SimpleTextTile(BaseTile):
 
         self.hex_id_label = QLabel(config["hex_id"])
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        self.hex_id_label.setStyleSheet("color: white; font-size: 40px; font-weight: bold;")
+        self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config["title"])
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
-        self.title_label.setStyleSheet("color: rgba(255, 255, 255, 180); font-size: 20px;")
+        self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
         self.title_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.title_label.mousePressEvent = self.edit_title
@@ -80,18 +87,18 @@ class SimpleTextTile(BaseTile):
         self.body_label = QLabel("—")
         self.body_label.setWordWrap(True)
         self.body_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.body_label.setStyleSheet("color: #e2e8f0; padding: 30px; font-size: 48px; font-weight: bold;")
+        self.body_label.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_BODY}")
 
         layout.addWidget(self.body_label, stretch=1)
 
-        # Register MQTT callback if bound
+        # Register MQTT callback if present
         bindings = config.get("bindings", {})
         value_binding = bindings.get("value", {})
         if value_binding.get("type") == "mqtt":
             topic = value_binding["topic"]
             key = f"mqtt:{topic}"
             format_str = value_binding.get("format", "{}")
-            def update_callback(payload):
+            def mqtt_callback(payload):
                 try:
                     fahrenheit = float(payload)
                     celsius = (fahrenheit - 32) * 5 / 9
@@ -99,9 +106,9 @@ class SimpleTextTile(BaseTile):
                 except ValueError:
                     formatted = payload
                 self.body_label.setText(formatted)
-            self.dispatcher.register_cb(key, update_callback)
+            self.dispatcher.register_cb(key, mqtt_callback)
 
-        # Static value
+        # Static value (initial display)
         if value_binding.get("type") == "static":
             self.body_label.setText(value_binding.get("value", "—"))
 
