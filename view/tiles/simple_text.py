@@ -1,22 +1,24 @@
 """
-Created on Thu Jan  2 16:04:05 2026
+Created on Thu Jan  1 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/simple_text.py
 # ================================
-# File version: v1.1.0
-# Sync'd to dashboard release: v3.7.0
+# File version: v1.0.9
+# Sync'd to dashboard release: v3.8.4
 # Description: SimpleTextTile — single-value display tile with header
 #
 # Features:
 # ✅ Displays a single value in large centered text
-# ✅ All styling imported from style.py
-# ✅ Supports "value" signal via dispatcher callback registration
+# ✅ Gradient header imported from style.py
+# ✅ All text styling imported from style.py
+# ✅ Registers MQTT callback with dispatcher for live updates
+# ✅ Static initial value support
 # ✅ Title editable via click
 #
-# Feature Update: v1.1.0
-# ✅ Full styling isolation — no inline setStyleSheet calls
+# Feature Update: v1.0.9
+# ✅ Restored MQTT callback registration — fixes no updates
 # ================================
 """
 
@@ -28,12 +30,12 @@ from support.myLOG2 import LOG3
 from .base import BaseTile
 from style import (
     HEADER_GRADIENT,
-    FONT_HEX_ID,
-    FONT_TITLE,
-    FONT_BODY,
     TEXT_HEADER,
     TEXT_SUBTITLE,
-    TEXT_PRIMARY
+    TEXT_PRIMARY,
+    FONT_HEX_ID,
+    FONT_TITLE,
+    FONT_BODY
 )
 
 
@@ -91,7 +93,7 @@ class SimpleTextTile(BaseTile):
 
         layout.addWidget(self.body_label, stretch=1)
 
-        # Register MQTT callback if present
+        # Register MQTT callback if bound
         bindings = config.get("bindings", {})
         value_binding = bindings.get("value", {})
         if value_binding.get("type") == "mqtt":
@@ -107,7 +109,8 @@ class SimpleTextTile(BaseTile):
                     formatted = payload
                 self.body_label.setText(formatted)
             self.dispatcher.register_cb(key, mqtt_callback)
-
+            LOG3(400 + 30, f"SimpleTextTile registered for MQTT key: {key}")
+            
         # Static value (initial display)
         if value_binding.get("type") == "static":
             self.body_label.setText(value_binding.get("value", "—"))

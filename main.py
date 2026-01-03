@@ -5,8 +5,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # main.py
 # ================================
-# File version: v1.7.2
-# Sync'd to dashboard release: v3.7.4
+# File version: v1.7.3
+# Sync'd to dashboard release: v3.7.0
 # Description: Application entry point — bootstraps the dashboard
 #
 # Features:
@@ -16,8 +16,8 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.7.2
-# ✅ Fixed double reload after Force Default Layout — stops watcher/polling
+# Feature Update: v1.7.3
+# ✅ Menu bar styling now imported from style.py (single file styling)
 # ================================
 """
 
@@ -33,6 +33,7 @@ from PyQt6.QtCore import Qt
 
 from controller.dashboard_controller import DashboardController
 from config import save_config, load_config, CONFIG_FILE
+from style import MENU_BAR_STYLE
 
 
 class AddTileDialog(QDialog):
@@ -89,7 +90,7 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.7.4 – January 02, 2026")
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.8.0 – January 02, 2026")
         self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)
@@ -104,18 +105,8 @@ class MainWindow(QMainWindow):
         self.controller.initialize()
 
     def create_menu(self):
-        self.menu_bar.setStyleSheet("""
-            QMenuBar {
-                background-color: #1e293b;
-                color: white;
-                padding: 8px;
-                border-bottom: 1px solid #334155;
-            }
-            QMenuBar::item { padding: 8px 20px; }
-            QMenuBar::item:selected { background-color: #6366f1; border-radius: 6px; }
-            QMenu { background-color: #1e293b; color: white; border: 1px solid #334155; }
-            QMenu::item:selected { background-color: #6366f1; }
-        """)
+        # Menu bar styling now from style.py
+        self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
         file_menu = self.menu_bar.addMenu("File")
 
@@ -158,10 +149,8 @@ class MainWindow(QMainWindow):
             try:
                 if os.path.exists(CONFIG_FILE):
                     os.remove(CONFIG_FILE)
-                    # Stop watcher to prevent double trigger
                     self.controller.stop_file_watcher()
                     QMessageBox.information(self, "Reset", "layout.json deleted — defaults loaded")
-                    # Immediate reload
                     self.view.load_config(load_config())
                 else:
                     QMessageBox.information(self, "Reset", "No layout.json found — already using defaults")
@@ -182,7 +171,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "About",
-            "Dynamic MQTT Dashboard\nv3.7.4\nFixed double reload on Force Default"
+            "Dynamic MQTT Dashboard\nv3.7.0\nStyling centralized"
         )
 
     def closeEvent(self, event):

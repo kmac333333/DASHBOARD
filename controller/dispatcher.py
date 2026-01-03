@@ -5,19 +5,19 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # controller/dispatcher.py
 # ================================
-# File version: v1.9.2
-# Sync'd to dashboard release: v3.8.6
+# File version: v1.9.3
+# Sync'd to dashboard release: v3.8.4
 # Description: DataDispatcher — central data bus for inbound sources
 #
 # Features:
 # ✅ Manages MQTT client lifecycle and message routing
 # ✅ Creates and manages SystemPropertySource instances
-# ✅ register_cb(key, callback) — replaces existing callback for key
-# ✅ Emits data to registered callbacks
+# ✅ register_cb(key, callback) — appends callbacks (multi-sink support)
+# ✅ Emits data to all registered callbacks
 # ✅ Graceful shutdown
 #
-# Feature Update: v1.9.2
-# ✅ Fixed MQTT message flow — ensured registration in start()
+# Feature Update: v1.9.3
+# ✅ register_cb now appends callbacks — supports multiple tiles per topic
 # ================================
 """
 
@@ -32,16 +32,18 @@ class DataDispatcher(QObject):
     def __init__(self):
         super().__init__()
         self.mqtt_client = MqttLiveClient()
-        self.callbacks = {}
+        self.callbacks = {}  # "channel_key": [callback1, callback2, ...]
         self.system_sources = []
 
     def register_cb(self, key: str, callback):
-        was_registered = key in self.callbacks
-        self.callbacks[key] = [callback]
-        if was_registered:
-            LOG3(200 + 5, f"Replaced callback for channel '{key}'")
+        """Register a callback for a named data channel — appends for multi-sink."""
+        if key not in self.callbacks:
+            self.callbacks[key] = []
+        if callback not in self.callbacks[key]:  # Avoid exact duplicates
+            self.callbacks[key].append(callback)
+            LOG3(200 + 5, f"Appended callback for channel '{key}'")
         else:
-            LOG3(200 + 5, f"Registered callback for channel '{key}'")
+            LOG3(200 + 5, f"Callback already registered for channel '{key}'")
 
     def _emit(self, key: str, value):
         if key in self.callbacks:
@@ -53,9 +55,9 @@ class DataDispatcher(QObject):
 
     def start(self):
         LOG3(200 + 1, "Dispatcher starting")
-        # Critical: register dispatcher for MQTT messages
+														 
         self.mqtt_client.register_cb("message_received", self.on_mqtt_message)
-        LOG3(200 + 2, "Registered on_mqtt_message callback with MqttLiveClient")
+																				
         self.mqtt_client.start()
 
     def bind_config(self, configs):
@@ -107,6 +109,11 @@ class DataDispatcher(QObject):
     def on_mqtt_message(self, topic, payload):
         LOG3(200 + 50, f"Dispatcher received MQTT: {topic} -> {payload}")
         key = f"mqtt:{topic}"
+  #      try:
+  #          fahrenheit = float(payload)
+  #          celsius = (fahrenheit - 32) * 5 / 9
+  #          self._emit(key, (fahrenheit, celsius))
+  #      except ValueError:
         self._emit(key, payload)
 
     def stop(self):

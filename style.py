@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  2 16:04:05 2026
+Created on Thu Jan  3 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # style.py
 # ================================
 # File version: v1.0.2
-# Sync'd to dashboard release: v3.7.0
+# Sync'd to dashboard release: v3.7.1
 # Description: Single source of truth for all visual styling
 #
 # Features:
@@ -15,7 +15,7 @@ Created on Thu Jan  2 16:04:05 2026
 # ✅ Header gradient
 # ✅ Menu bar styling
 # ✅ Text colors (header, subtitle, primary, secondary)
-# ✅ Font specifications (family, sizes, weights)
+# ✅ Font specifications (family, sizes, weights for all elements)
 # ================================
 """
 
@@ -54,11 +54,14 @@ MENU_BAR_STYLE = """
     QMenu::item:selected { background-color: #6366f1; }
 """
 
+# Scroll area style (transparent)
+SCROLL_AREA_STYLE = "QScrollArea { border: none; background: transparent; }"
+
 # Text colors
 TEXT_HEADER = "white"                          # Hex ID
 TEXT_SUBTITLE = "rgba(255, 255, 255, 180)"     # Title
-TEXT_PRIMARY = "#e2e8f0"                       # Body value
-TEXT_SECONDARY = "#94a3b8"                     # Line labels (e.g., "Uptime:")
+TEXT_PRIMARY = "#e2e8f0"                       # Main values (body)
+TEXT_SECONDARY = "#94a3b8"                     # Labels (e.g., "Uptime:", "Indoor:")
 
 # Font styles (combined for easy use)
 FONT_HEX_ID = f"font-size: 40px; font-weight: bold; font-family: {FONT_FAMILY};"

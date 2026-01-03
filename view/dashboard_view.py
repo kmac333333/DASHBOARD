@@ -1,24 +1,24 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  3 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.3.0
-# Sync'd to dashboard release: v3.7.0
+# File version: v1.3.3
+# Sync'd to dashboard release: v3.7.1
 # Description: DashboardView — manages tile layout and unified styling
 #
 # Features:
-# ✅ Centralized unified styling for all tiles (background, border, hover)
+# ✅ Centralized unified styling for all tiles (imported from style.py)
 # ✅ Scrollable grid layout with automatic tile placement
 # ✅ Tile factory for easy extension of new tile types
 # ✅ Safe loading and clearing of tiles from configuration
 # ✅ Responsive row stretching for clean bottom alignment
 # ✅ Handles external layout change prompt from controller
 #
-# Feature Update: v1.3.0
-# ✅ All styling imported from top-level style.py
+# Feature Update: v1.3.3
+# ✅ All inline styling replaced with imports from style.py
 # ================================
 """
 
@@ -28,8 +28,9 @@ from PyQt6.QtCore import QSize
 from support.myLOG2 import LOG3
 from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
+from view.tiles.dual_text import DualTextTile
 from config import load_config
-from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE
+from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE, SCROLL_AREA_STYLE
 
 
 # Tile factory
@@ -39,6 +40,8 @@ def create_tile(config, dispatcher):
         return SimpleTextTile(config, dispatcher)
     elif tile_type == "multiline":
         return MultilineTile(config, dispatcher)
+    elif tile_type == "dual_text":
+        return DualTextTile(config, dispatcher)
     else:
         LOG3(400 + 50, f"Unknown tile type: {tile_type} — falling back to simple_text")
         return SimpleTextTile(config, dispatcher)
@@ -63,7 +66,7 @@ class DashboardView(QWidget):
 
         self.scroll_area = QScrollArea()
         self.scroll_area.setWidgetResizable(True)
-        self.scroll_area.setStyleSheet("QScrollArea { border: none; background: transparent; }")
+        self.scroll_area.setStyleSheet(SCROLL_AREA_STYLE)
         layout.addWidget(self.scroll_area)
 
         self.container = QWidget()

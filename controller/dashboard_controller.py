@@ -5,7 +5,7 @@ Created on Thu Jan  1 16:04:05 2026
 # ================================
 # controller/dashboard_controller.py
 # ================================
-# File version: v1.0.6
+# File version: v1.0.7
 # Sync'd to dashboard release: v3.8.0
 # Description: DashboardController — orchestrates startup, config loading, file watching, and shutdown
 #
@@ -18,7 +18,7 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Prompts view for reload on change
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.0.6
+# Feature Update: v1.0.7
 # ✅ Added stop_file_watcher() to cleanly stop watcher after Force Default
 # ================================
 """

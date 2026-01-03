@@ -50,26 +50,23 @@ DEFAULT_CONFIG = [
         }
     },
     {
-        "id": "network",
-        "hex_id": "NETWORK",
-        "title": "Network",
-        "size": [1, 1],
+        "id": "dual-temp",
+        "type": "dual_text",
+        "hex_id": "DUAL",
+        "title": "Indoor / Outdoor",
+        "size": [1, 2],
         "bindings": {
-            "value": {
-                "type": "static",
-                "value": "↑ 45.2 Mbps\n↓ 12.8 Mbps\nLatency: 18ms"
-            }
-        }
-    },
-    {
-        "id": "alerts",
-        "hex_id": "ALERTS",
-        "title": "Alerts",
-        "size": [1, 1],
-        "bindings": {
-            "value": {
-                "type": "static",
-                "value": "0 critical\n3 warnings"
+            "primary": {
+                "type": "mqtt",
+                "topic": "/home/temp/unit/A/08BD45F23A08",
+                "format": "{:.1f}°F → {:.1f}°C",
+                "label": "Indoor"
+            },
+            "secondary": {
+                "type": "mqtt",
+                "topic": "/home/temp/unit/B/08BD45F23A08",
+                "format": "{:.1f}°F → {:.1f}°C",
+                "label": "Outdoor"
             }
         }
     }
