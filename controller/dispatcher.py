@@ -81,6 +81,11 @@ class DataDispatcher(QObject):
                         source.data_ready.connect(lambda v, k=key: self._emit(k, v))
                         self.system_sources.append(source)
                         source.start()
+                        
+    def clear_callbacks(self):
+            """Clear all registered callbacks — called on reload to prevent deleted object errors."""
+            self.callbacks.clear()
+            LOG3(200 + 7, "Cleared all dispatcher callbacks for reload")
 
     def get_system_getter(self, prop):
         import time

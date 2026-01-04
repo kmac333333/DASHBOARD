@@ -5,20 +5,12 @@ Created on Thu Jan  3 16:04:05 2026
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.3.3
-# Sync'd to dashboard release: v3.8.7
+# File version: v1.3.4
+# Sync'd to dashboard release: v3.8.8
 # Description: DashboardView — manages tile layout and unified styling
 #
-# Features:
-# ✅ Centralized unified styling for all tiles (imported from style.py)
-# ✅ Scrollable grid layout with automatic tile placement
-# ✅ Tile factory for easy extension of new tile types
-# ✅ Safe loading and clearing of tiles from configuration
-# ✅ Responsive row stretching for clean bottom alignment
-# ✅ Handles external layout change prompt from controller
-#
-# Feature Update: v1.3.3
-# ✅ Added support for 'system_out' tile type in factory
+# Feature Update: v1.3.4
+# ✅ Clears dispatcher callbacks on reload to prevent deleted object errors
 # ================================
 """
 
@@ -29,12 +21,12 @@ from support.myLOG2 import LOG3
 from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
 from view.tiles.dual_text import DualTextTile
-from view.tiles.system_out import SystemOutTile  # ← New import
+from view.tiles.system_out import SystemOutTile
 from config import load_config
 from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE, SCROLL_AREA_STYLE
 
 
-# Tile factory — now supports system_out
+# Tile factory
 def create_tile(config, dispatcher):
     tile_type = config.get("type", "simple_text")
     if tile_type == "simple_text":
@@ -95,6 +87,8 @@ class DashboardView(QWidget):
 
     def load_config(self, configs):
         LOG3(400 + 1, f"Loading {len(configs)} tiles — rebinding in progress")
+        # Clear all callbacks to prevent updates to deleted labels
+        self.dispatcher.clear_callbacks()
         self._clear_layout()
         self.tiles.clear()
 
@@ -106,7 +100,6 @@ class DashboardView(QWidget):
         LOG3(400 + 2, "Rebinding complete — layout reloaded")
 
     def export_current_config(self):
-        """Return a list of current tile configurations for saving."""
         current = []
         for tile_id, tile in self.tiles.items():
             config = tile.config.copy()
