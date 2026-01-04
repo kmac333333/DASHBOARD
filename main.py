@@ -5,7 +5,7 @@ Created on Thu Jan  3 16:04:05 2026
 # ================================
 # main.py
 # ================================
-# File version: v1.7.5
+# File version: v1.7.6
 # Sync'd to dashboard release: v3.8.6
 # Description: Application entry point — bootstraps the dashboard
 #
@@ -13,12 +13,12 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Minimal bootstrap: creates QApplication, sets dark palette
 # ✅ Instantiates DashboardController
 # ✅ Builds menu: File (Save Layout, Force Default Layout, Exit), Tile (Add Static Tile), Help (About)
-# ✅ Debug menu with "Dump Registrations" item (plumbing)
+# ✅ Debug menu with "Dump Registrations" and "Dump Object Hierarchy" (plumbing)
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
-# Feature Update: v1.7.4
-# ✅ Added Debug menu and "Dump Registrations" item (calls dispatcher.dump_registrations)
+# Feature Update: v1.7.6
+# ✅ Added "Dump Object Hierarchy" menu item under Debug (calls debug.dump_object_hierarchy)
 # ================================
 """
 
@@ -35,6 +35,7 @@ from PyQt6.QtCore import Qt
 from controller.dashboard_controller import DashboardController
 from config import save_config, load_config, CONFIG_FILE
 from style import MENU_BAR_STYLE
+from support.debug import dump_object_hierarchy
 
 
 class AddTileDialog(QDialog):
@@ -106,10 +107,10 @@ class MainWindow(QMainWindow):
         self.controller.initialize()
 
     def create_menu(self):
-											
+		   
         self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
-        # File menu
+				   
         file_menu = self.menu_bar.addMenu("File")
 
         save_action = file_menu.addAction("Save Layout")
@@ -126,17 +127,19 @@ class MainWindow(QMainWindow):
         exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
 
-        # Tile menu
+				   
         tile_menu = self.menu_bar.addMenu("Tile")
         add_action = tile_menu.addAction("Add Static Tile")
         add_action.triggered.connect(self.add_static_tile)
 
-        # Debug menu (plumbing)
+        # Debug menu
         debug_menu = self.menu_bar.addMenu("Debug")
-        dump_action = debug_menu.addAction("Dump Registrations")
-        dump_action.triggered.connect(self.controller.dispatcher.dump_registrations)
+        dump_reg_action = debug_menu.addAction("Dump Registrations")
+        dump_reg_action.triggered.connect(self.controller.dispatcher.dump_registrations)
 
-        # Help menu
+        dump_hierarchy_action = debug_menu.addAction("Dump Object Hierarchy")
+        dump_hierarchy_action.triggered.connect(dump_object_hierarchy)
+
         help_menu = self.menu_bar.addMenu("Help")
         about_action = help_menu.addAction("About")
         about_action.triggered.connect(self.show_about)
