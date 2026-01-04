@@ -5,7 +5,7 @@ Created on Thu Jan  3 16:04:05 2026
 # ================================
 # main.py
 # ================================
-# File version: v1.7.4
+# File version: v1.7.5
 # Sync'd to dashboard release: v3.8.6
 # Description: Application entry point — bootstraps the dashboard
 #
