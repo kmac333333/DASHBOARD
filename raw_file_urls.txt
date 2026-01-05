@@ -1,0 +1,16 @@
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/main.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/style.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/config.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/dashboard_view.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/base.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/dual_text.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/multiline.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/simple_text.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/system_out.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/controller/dispatcher.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/controller/dashboard_controller.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/STYLE.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/mqtt_client.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/system_properties.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/preferences.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/debug.py

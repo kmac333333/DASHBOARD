@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/system_out.py
 # ================================
-# File version: v1.0.2
-# Sync'd to dashboard release: v3.8.6
+# File version: v1.0.3
+# Sync'd to dashboard release: v3.9.0
 # Description: SystemOutTile — scrollable console-style tile for debug/system output
 #
 # Features:
@@ -16,15 +16,16 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Append-only output (console-like)
 # ✅ Monospace font for readability
 # ✅ All styling imported from style.py
+# ✅ Self-naming with objectName() for debug hierarchy dump
 #
-# Feature Update: v1.0.2
-# ✅ Added timestamp prefix to each line
-# ✅ Improved readability with monospace and padding
+# Feature Update: v1.0.3
+# ✅ Added objectName() naming for tile, header, console
+													 
 # ================================
 """
 
 from PyQt6.QtWidgets import QVBoxLayout, QTextEdit, QWidget, QLabel
-from PyQt6.QtCore import Qt, QDateTime
+from PyQt6.QtCore import Qt
 
 from support.myLOG2 import LOG3
 from .base import BaseTile
@@ -36,8 +37,12 @@ class SystemOutTile(BaseTile):
         super().__init__(parent)
         self.config = config
         self.dispatcher = dispatcher
+        self.tile_id = config["id"]
         self.height_tiles = config["size"][0]
         self.width_tiles = config["size"][1]
+
+        # Self-naming for hierarchy dump
+        self.setObjectName(f"tile-{self.tile_id}")
 
         self.setMinimumSize(self.width_tiles * 160, self.height_tiles * 160)
 
@@ -47,6 +52,7 @@ class SystemOutTile(BaseTile):
 
         # Header
         header_container = QWidget()
+        header_container.setObjectName(f"header-{self.tile_id}")
         header_container.setFixedHeight(90)
         header_layout = QVBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
@@ -60,10 +66,12 @@ class SystemOutTile(BaseTile):
         title_layout.setContentsMargins(0, 0, 0, 0)
 
         self.hex_id_label = QLabel("DEBUG")
+        self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config.get("title", "System Out"))
+        self.title_label.setObjectName(f"title-{self.tile_id}")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
         self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
@@ -77,6 +85,7 @@ class SystemOutTile(BaseTile):
 
         # Body — scrollable text output
         self.text_edit = QTextEdit()
+        self.text_edit.setObjectName(f"console-{self.tile_id}")
         self.text_edit.setReadOnly(True)
         self.text_edit.setStyleSheet("""
             background-color: #1e1e1e;
@@ -92,12 +101,12 @@ class SystemOutTile(BaseTile):
         # Register for debug output
         key = "debug:system_out"
         def output_callback(message: str):
-            timestamp = QDateTime.currentDateTime().toString("hh:mm:ss")
-            formatted = f"[{timestamp}] {message}"
-            self.append_output(formatted)
+																		
+												  
+            self.append_output(message)
         self.dispatcher.register_cb(key, output_callback)
 
     def append_output(self, message: str):
-        """Append message with timestamp and auto-scroll."""
+        """Append message and auto-scroll to bottom."""
         self.text_edit.append(message)
         self.text_edit.ensureCursorVisible()

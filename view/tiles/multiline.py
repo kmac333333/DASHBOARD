@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/multiline.py
 # ================================
-# File version: v1.1.4
-# Sync'd to dashboard release: v3.7.1
+# File version: v1.1.5
+# Sync'd to dashboard release: v3.9.0
 # Description: MultilineTile — sink tile for up to 5 lines of labeled data
 #
 # Features:
@@ -17,9 +17,10 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ Inherits unified styling from DashboardView
 # ✅ Title editable via click
 # ✅ Registers callbacks with dispatcher for data updates (sink pattern)
+# ✅ Self-naming with objectName() for debug hierarchy dump
 #
-# Feature Update: v1.1.4
-# ✅ Full styling isolation — no inline setStyleSheet calls
+# Feature Update: v1.1.5
+# ✅ Added objectName() for tile, header, labels, values (debug readability)
 # ================================
 """
 
@@ -47,8 +48,12 @@ class MultilineTile(BaseTile):
         super().__init__(parent)
         self.config = config
         self.dispatcher = dispatcher
+        self.tile_id = config["id"]
         self.height_tiles = config["size"][0]
         self.width_tiles = config["size"][1]
+
+        # Self-naming for hierarchy dump
+        self.setObjectName(f"tile-{self.tile_id}")
 
         self.setMinimumSize(QSize(self.width_tiles * 160, self.height_tiles * 160))
 
@@ -58,6 +63,7 @@ class MultilineTile(BaseTile):
 
         # Header — gradient from style.py
         header_container = QWidget()
+        header_container.setObjectName(f"header-{self.tile_id}")
         header_container.setFixedHeight(90)
         header_layout = QHBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
@@ -71,10 +77,12 @@ class MultilineTile(BaseTile):
         title_layout.setContentsMargins(0, 0, 0, 0)
 
         self.hex_id_label = QLabel(config["hex_id"])
+        self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config["title"])
+        self.title_label.setObjectName(f"title-{self.tile_id}")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
         self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
@@ -91,6 +99,7 @@ class MultilineTile(BaseTile):
 
         # Body
         body = QWidget()
+        body.setObjectName(f"body-{self.tile_id}")
         body_layout = QVBoxLayout(body)
         body_layout.setContentsMargins(20, 20, 20, 20)
         body_layout.setSpacing(12)
@@ -107,10 +116,12 @@ class MultilineTile(BaseTile):
             prop = props[i]
             label_text = prop.replace("_", " ").title() if prop else f"Line {i+1}"
             label = QLabel(label_text + ":")
+            label.setObjectName(f"label-{self.tile_id}-line{i+1}")
             label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}")
             h_layout.addWidget(label)
 
             value = QLabel("—")
+            value.setObjectName(f"value-{self.tile_id}-line{i+1}")
             value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_VALUE}")
             value.setWordWrap(True)
             h_layout.addWidget(value, stretch=1)

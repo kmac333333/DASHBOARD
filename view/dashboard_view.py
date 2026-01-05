@@ -1,16 +1,25 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.3.4
-# Sync'd to dashboard release: v3.8.8
+# File version: v1.3.5
+# Sync'd to dashboard release: v3.9.0
 # Description: DashboardView — manages tile layout and unified styling
 #
+# Features:
+# ✅ Centralized unified styling for all tiles (imported from style.py)
+# ✅ Scrollable grid layout with automatic tile placement
+# ✅ Tile factory for easy extension of new tile types
+# ✅ Safe loading and clearing of tiles from configuration
+# ✅ Responsive row stretching for clean bottom alignment
+# ✅ Handles external layout change prompt from controller
+# ✅ Self-naming with objectName() for debug hierarchy dump
+#
 # Feature Update: v1.3.4
-# ✅ Clears dispatcher callbacks on reload to prevent deleted object errors
+# ✅ Added objectName() for DashboardView, scroll area, container
 # ================================
 """
 
@@ -47,6 +56,9 @@ class DashboardView(QWidget):
         super().__init__()
         self.dispatcher = dispatcher
 
+        # Self-naming for hierarchy dump
+        self.setObjectName("dashboard-view")
+
         # All styling from style.py
         self.setStyleSheet(DASHBOARD_STYLE + UNIFIED_TILE_STYLE)
 
@@ -60,11 +72,13 @@ class DashboardView(QWidget):
         layout.setSpacing(0)
 
         self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName("scroll-area")
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setStyleSheet(SCROLL_AREA_STYLE)
         layout.addWidget(self.scroll_area)
 
         self.container = QWidget()
+        self.container.setObjectName("tile-container")
         self.grid = QGridLayout(self.container)
         self.grid.setSpacing(30)
         self.grid.setContentsMargins(30, 30, 30, 30)
@@ -87,8 +101,8 @@ class DashboardView(QWidget):
 
     def load_config(self, configs):
         LOG3(400 + 1, f"Loading {len(configs)} tiles — rebinding in progress")
-        # Clear all callbacks to prevent updates to deleted labels
-        self.dispatcher.clear_callbacks()
+																  
+										 
         self._clear_layout()
         self.tiles.clear()
 
@@ -100,6 +114,7 @@ class DashboardView(QWidget):
         LOG3(400 + 2, "Rebinding complete — layout reloaded")
 
     def export_current_config(self):
+        """Return a list of current tile configurations for saving."""
         current = []
         for tile_id, tile in self.tiles.items():
             config = tile.config.copy()

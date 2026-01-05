@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/dual_text.py
 # ================================
-# File version: v1.0.1
-# Sync'd to dashboard release: v3.7.1
+# File version: v1.0.2
+# Sync'd to dashboard release: v3.9.0
 # Description: DualTextTile — dual-value display tile with header
 #
 # Features:
@@ -15,9 +15,10 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Value-based color (blue cold, green normal, red hot)
 # ✅ Gradient header with dynamic hex ID from last field of MQTT topic
 # ✅ All styling imported from style.py
+# ✅ Self-naming with objectName() for debug hierarchy dump
 #
-# Feature Update: v1.0.1
-# ✅ Hex ID now extracted from last field of MQTT topic
+# Feature Update: v1.0.2
+# ✅ Added objectName() naming for tile, header, labels, values
 # ================================
 """
 
@@ -28,18 +29,18 @@ from PyQt6.QtGui import QCursor
 from support.myLOG2 import LOG3
 from .base import BaseTile
 from style import (
-    HEADER_GRADIENT, 
-    TEXT_HEADER, 
-    TEXT_SUBTITLE, 
-    TEXT_PRIMARY, 
-    TEXT_SECONDARY, 
-    FONT_HEX_ID,                 
-    FONT_LABEL, 
-    FONT_TITLE, 
-    FONT_VALUE, 
-    FONT_BODY
+    HEADER_GRADIENT,
+    TEXT_HEADER,
+    TEXT_SUBTITLE,
+    TEXT_SECONDARY,
+    TEXT_PRIMARY,
+    FONT_HEX_ID,
+    FONT_TITLE,
+    FONT_BODY,
+    FONT_LABEL,
+    FONT_VALUE
 )
-			  
+	 
 
 
 class DualTextTile(BaseTile):
@@ -47,8 +48,12 @@ class DualTextTile(BaseTile):
         super().__init__(parent)
         self.config = config
         self.dispatcher = dispatcher
+        self.tile_id = config["id"]
         self.height_tiles = config["size"][0]
         self.width_tiles = config["size"][1]
+
+        # Self-naming for hierarchy dump
+        self.setObjectName(f"tile-{self.tile_id}")
 
         self.setMinimumSize(QSize(self.width_tiles * 160, self.height_tiles * 160))
 
@@ -58,6 +63,7 @@ class DualTextTile(BaseTile):
 
         # Header — gradient from style.py
         header_container = QWidget()
+        header_container.setObjectName(f"header-{self.tile_id}")
         header_container.setFixedHeight(90)
         header_layout = QHBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
@@ -71,10 +77,12 @@ class DualTextTile(BaseTile):
         title_layout.setContentsMargins(0, 0, 0, 0)
 
         self.hex_id_label = QLabel("—")  # Will be updated from topic
+        self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config["title"])
+        self.title_label.setObjectName(f"title-{self.tile_id}")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
         self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
@@ -91,6 +99,7 @@ class DualTextTile(BaseTile):
 
         # Body — dual displays
         body = QWidget()
+        body.setObjectName(f"body-{self.tile_id}")
         body_layout = QVBoxLayout(body)
         body_layout.setContentsMargins(20, 20, 20, 20)
         body_layout.setSpacing(12)
@@ -105,10 +114,12 @@ class DualTextTile(BaseTile):
 
         primary_label_text = primary_binding.get("label", "Primary")
         primary_label = QLabel(primary_label_text + ":")
+        primary_label.setObjectName(f"label-{self.tile_id}-primary")
         primary_label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}")
         primary_h_layout.addWidget(primary_label)
 
         self.primary_value = QLabel("—")
+        self.primary_value.setObjectName(f"value-{self.tile_id}-primary")
         self.primary_value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_BODY}")
         self.primary_value.setWordWrap(True)
         primary_h_layout.addWidget(self.primary_value, stretch=1)
@@ -121,10 +132,12 @@ class DualTextTile(BaseTile):
 
         secondary_label_text = secondary_binding.get("label", "Secondary")
         secondary_label = QLabel(secondary_label_text + ":")
+        secondary_label.setObjectName(f"label-{self.tile_id}-secondary")
         secondary_label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}")
         secondary_h_layout.addWidget(secondary_label)
 
         self.secondary_value = QLabel("—")
+        self.secondary_value.setObjectName(f"value-{self.tile_id}-secondary")
         self.secondary_value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_VALUE}")
         self.secondary_value.setWordWrap(True)
         secondary_h_layout.addWidget(self.secondary_value, stretch=1)
@@ -166,7 +179,7 @@ class DualTextTile(BaseTile):
                     color = self.get_color(fahrenheit)
                     self.secondary_value.setStyleSheet(f"color: {color}; {FONT_VALUE}")
                     self.secondary_value.setText(formatted)
-                    # Update hex ID from last field of topic (use primary if secondary not available)
+                    # Update hex ID from last field of topic (use secondary if primary not available)
                     hex_id = topic.split("/")[-1]
                     self.hex_id_label.setText(hex_id)
                 except ValueError:

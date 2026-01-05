@@ -1,24 +1,24 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # main.py
 # ================================
 # File version: v1.7.6
-# Sync'd to dashboard release: v3.8.6
+# Sync'd to dashboard release: v3.9.0
 # Description: Application entry point — bootstraps the dashboard
 #
 # Features:
 # ✅ Minimal bootstrap: creates QApplication, sets dark palette
 # ✅ Instantiates DashboardController
 # ✅ Builds menu: File (Save Layout, Force Default Layout, Exit), Tile (Add Static Tile), Help (About)
-# ✅ Debug menu with "Dump Registrations" and "Dump Object Hierarchy" (plumbing)
+# ✅ Debug menu with "Dump Registrations" and "Dump Object Hierarchy"
 # ✅ Starts controller initialization
 # ✅ Handles graceful shutdown
 #
 # Feature Update: v1.7.6
-# ✅ Added "Dump Object Hierarchy" menu item under Debug (calls debug.dump_object_hierarchy)
+# ✅ Added "Dump Object Hierarchy" menu item under Debug
 # ================================
 """
 
@@ -35,7 +35,7 @@ from PyQt6.QtCore import Qt
 from controller.dashboard_controller import DashboardController
 from config import save_config, load_config, CONFIG_FILE
 from style import MENU_BAR_STYLE
-from support.debug import dump_object_hierarchy
+from support.debug import dump_object_hierarchy  # ← For hierarchy dump
 
 
 class AddTileDialog(QDialog):
@@ -92,7 +92,7 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.8.6 – January 03, 2026")
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.9.0 – January 04, 2026")
         self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)
@@ -107,10 +107,10 @@ class MainWindow(QMainWindow):
         self.controller.initialize()
 
     def create_menu(self):
-		   
+	 
         self.menu_bar.setStyleSheet(MENU_BAR_STYLE)
 
-				   
+	   
         file_menu = self.menu_bar.addMenu("File")
 
         save_action = file_menu.addAction("Save Layout")
@@ -127,7 +127,7 @@ class MainWindow(QMainWindow):
         exit_action.setShortcut("Ctrl+Q")
         exit_action.triggered.connect(self.close)
 
-				   
+	   
         tile_menu = self.menu_bar.addMenu("Tile")
         add_action = tile_menu.addAction("Add Static Tile")
         add_action.triggered.connect(self.add_static_tile)
@@ -183,7 +183,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "About",
-            "Dynamic Indexed MQTT Dashboard\nv3.8.6\nDebug plumbing added"
+            "Dynamic Indexed MQTT Dashboard\nv3.9.0\nDebug hierarchy dump added"
         )
 
     def closeEvent(self, event):

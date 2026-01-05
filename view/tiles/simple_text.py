@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  1 16:04:05 2026
+Created on Thu Jan  4 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/tiles/simple_text.py
 # ================================
-# File version: v1.0.9
-# Sync'd to dashboard release: v3.8.4
+# File version: v1.1.1
+# Sync'd to dashboard release: v3.9.0
 # Description: SimpleTextTile — single-value display tile with header
 #
 # Features:
@@ -15,10 +15,10 @@ Created on Thu Jan  1 16:04:05 2026
 # ✅ All text styling imported from style.py
 # ✅ Registers MQTT callback with dispatcher for live updates
 # ✅ Static initial value support
-# ✅ Title editable via click
+# ✅ Title editable via click		   
 #
-# Feature Update: v1.0.9
-# ✅ Restored MQTT callback registration — fixes no updates
+# Feature Update: v1.1.1
+# ✅ Added self-naming with objectName() for debug hierarchy dump
 # ================================
 """
 
@@ -44,8 +44,12 @@ class SimpleTextTile(BaseTile):
         super().__init__(parent)
         self.config = config
         self.dispatcher = dispatcher
+        self.tile_id = config["id"]
         self.height_tiles = config["size"][0]
         self.width_tiles = config["size"][1]
+
+        # Self-naming for hierarchy dump
+        self.setObjectName(f"tile-{self.tile_id}")
 
         self.setMinimumSize(QSize(self.width_tiles * 160, self.height_tiles * 160))
 
@@ -55,6 +59,7 @@ class SimpleTextTile(BaseTile):
 
         # Header
         header_container = QWidget()
+        header_container.setObjectName(f"header-{self.tile_id}")
         header_container.setFixedHeight(90)
         header_layout = QHBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
@@ -68,10 +73,12 @@ class SimpleTextTile(BaseTile):
         title_layout.setContentsMargins(0, 0, 0, 0)
 
         self.hex_id_label = QLabel(config["hex_id"])
+        self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
         self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
 
         self.title_label = QLabel(config["title"])
+        self.title_label.setObjectName(f"title-{self.tile_id}")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
         self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
         self.title_label.setWordWrap(False)
@@ -87,6 +94,7 @@ class SimpleTextTile(BaseTile):
         layout.addWidget(header_container)
 
         self.body_label = QLabel("—")
+        self.body_label.setObjectName(f"body-{self.tile_id}")
         self.body_label.setWordWrap(True)
         self.body_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.body_label.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_BODY}")
@@ -109,7 +117,7 @@ class SimpleTextTile(BaseTile):
                     formatted = payload
                 self.body_label.setText(formatted)
             self.dispatcher.register_cb(key, mqtt_callback)
-            LOG3(400 + 30, f"SimpleTextTile registered for MQTT key: {key}")
+            LOG3(400 + 30, f"SimpleTextTile registered for MQTT key: {key}")	
             
         # Static value (initial display)
         if value_binding.get("type") == "static":
