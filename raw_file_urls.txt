@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tile
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/system_out.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/controller/dispatcher.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/controller/dashboard_controller.py
-https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/STYLE.py
+
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/mqtt_client.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/system_properties.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/preferences.py
