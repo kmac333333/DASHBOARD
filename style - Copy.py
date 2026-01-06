@@ -41,7 +41,10 @@ UNIFIED_TILE_STYLE = f"""
     overflow: hidden;
 """
 HEADER_GRADIENT =  f""" 
-
+    border-top : 0;
+    border-bottom : 2px solid blue;
+    border-left : 2px solid blue;
+    border-right : 2px solid blue;
 """
 # Text colors
 TEXT_HEADER = "#FFFFFF"
@@ -68,10 +71,6 @@ HEADER_STYLE_LINE_2 = f"""
     background: {TILE_BG};
     border: 0;
     border-radius : 0;
-"""
-#tile body
-BODY_STYLE = f"""
-    color: {TEXT_PRIMARY}; {FONT_BODY};
 """
 
 # Menu bar style

@@ -37,7 +37,7 @@ from config import save_config, load_config, CONFIG_FILE
 from style import MENU_BAR_STYLE
 from support.debug import dump_object_hierarchy  # ← For hierarchy dump
 
-
+# Add Tile Command in Menu
 class AddTileDialog(QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)

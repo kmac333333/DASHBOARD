@@ -31,7 +31,8 @@ from PyQt6.QtGui import QCursor
 from support.myLOG2 import LOG3
 from .base import BaseTile
 from style import (
-    HEADER_GRADIENT,
+    BODY_STYLE,
+    HEADER_STYLE_LINE_1, HEADER_STYLE_LINE_2,
     TEXT_HEADER,
     TEXT_SUBTITLE,
     TEXT_SECONDARY,
@@ -39,7 +40,8 @@ from style import (
     FONT_HEX_ID,
     FONT_TITLE,
     FONT_LABEL,
-    FONT_VALUE
+    FONT_VALUE,
+    HEADER_GRADIENT
 )
 
 
@@ -51,11 +53,11 @@ class MultilineTile(BaseTile):
         self.tile_id = config["id"]
         self.height_tiles = config["size"][0]
         self.width_tiles = config["size"][1]
-
+        self.update_geometry()
         # Self-naming for hierarchy dump
         self.setObjectName(f"tile-{self.tile_id}")
 
-        self.setMinimumSize(QSize(self.width_tiles * 160, self.height_tiles * 160))
+        #self.setMinimumSize(QSize(self.width_tiles * 160, self.height_tiles * 160))
 
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
@@ -68,7 +70,6 @@ class MultilineTile(BaseTile):
         header_layout = QHBoxLayout(header_container)
         header_layout.setContentsMargins(20, 8, 20, 8)
         header_layout.setSpacing(10)
-
         header_container.setStyleSheet(HEADER_GRADIENT)
 
         title_container = QWidget()
@@ -79,12 +80,12 @@ class MultilineTile(BaseTile):
         self.hex_id_label = QLabel(config["hex_id"])
         self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
         self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        self.hex_id_label.setStyleSheet(f"color: {TEXT_HEADER}; {FONT_HEX_ID}")
+        self.hex_id_label.setStyleSheet(HEADER_STYLE_LINE_1)
 
         self.title_label = QLabel(config["title"])
         self.title_label.setObjectName(f"title-{self.tile_id}")
         self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
-        self.title_label.setStyleSheet(f"color: {TEXT_SUBTITLE}; {FONT_TITLE}")
+        self.title_label.setStyleSheet(HEADER_STYLE_LINE_2)
         self.title_label.setWordWrap(False)
         self.title_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.title_label.mousePressEvent = self.edit_title

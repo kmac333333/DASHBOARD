@@ -54,6 +54,7 @@ def _traverse_hierarchy(obj):
         "objectName": obj.objectName() or "<unnamed>",
         "className": obj.metaObject().className(),
         "isWidget": obj.isWidgetType(),
+        "styleSheet": obj.styleSheet() if obj.isWidgetType() else "",
         "children": []
     }
     for child in obj.children():
