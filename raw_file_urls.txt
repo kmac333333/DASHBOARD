@@ -14,4 +14,5 @@ https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/m
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/system_properties.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/preferences.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/support/debug.py
+https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/view/tiles/weather.py
 https://raw.githubusercontent.com/kmac333333/DASHBOARD/refs/heads/main/raw_file_urls.txt
