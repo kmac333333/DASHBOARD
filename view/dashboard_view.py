@@ -1,11 +1,11 @@
 """
-Created on Thu Jan  4 16:04:05 2026
+Created on Thu Jan  6 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # view/dashboard_view.py
 # ================================
-# File version: v1.3.5
+# File version: v1.3.6
 # Sync'd to dashboard release: v3.9.0
 # Description: DashboardView — manages tile layout and unified styling
 #
@@ -17,9 +17,9 @@ Created on Thu Jan  4 16:04:05 2026
 # ✅ Responsive row stretching for clean bottom alignment
 # ✅ Handles external layout change prompt from controller
 # ✅ Self-naming with objectName() for debug hierarchy dump
-#
-# Feature Update: v1.3.4
-# ✅ Added objectName() for DashboardView, scroll area, container
+#		   
+# Feature Update: v1.3.6
+# ✅ Added support for 'weather' tile type in factory
 # ================================
 """
 
@@ -31,11 +31,12 @@ from view.tiles.simple_text import SimpleTextTile
 from view.tiles.multiline import MultilineTile
 from view.tiles.dual_text import DualTextTile
 from view.tiles.system_out import SystemOutTile
+from view.tiles.weather import WeatherTile  # ← New import
 from config import load_config
 from style import DASHBOARD_STYLE, SCROLL_AREA_STYLE
 
 
-# Tile factory
+# Tile factory — now supports weather
 def create_tile(config, dispatcher):
     tile_type = config.get("type", "simple_text")
     if tile_type == "simple_text":
@@ -46,6 +47,8 @@ def create_tile(config, dispatcher):
         return DualTextTile(config, dispatcher)
     elif tile_type == "system_out":
         return SystemOutTile(config, dispatcher)
+    elif tile_type == "weather":
+        return WeatherTile(config, dispatcher)
     else:
         LOG3(400 + 50, f"Unknown tile type: {tile_type} — falling back to simple_text")
         return SimpleTextTile(config, dispatcher)
@@ -57,7 +60,7 @@ class DashboardView(QWidget):
         self.dispatcher = dispatcher
 
         # Self-naming for hierarchy dump
-        self.setObjectName("dashboard-view")
+        self.setObjectName("dashboard-view")										
 
         # All styling from style.py
         self.setStyleSheet(DASHBOARD_STYLE )
@@ -101,8 +104,8 @@ class DashboardView(QWidget):
 
     def load_config(self, configs):
         LOG3(400 + 1, f"Loading {len(configs)} tiles — rebinding in progress")
-																  
-										 
+				  
+		   
         self._clear_layout()
         self.tiles.clear()
 

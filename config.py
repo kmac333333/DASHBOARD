@@ -1,12 +1,12 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  6 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # config.py
 # ================================
-# File version: v1.0.3
-# Sync'd to dashboard release: v3.8.7
+# File version: v1.0.4
+# Sync'd to dashboard release: v3.9.0
 # Description: Default configuration and config file handling
 #
 # Features:
@@ -15,8 +15,8 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Provides save_config() for "Save Layout" functionality
 # ✅ Handles missing/invalid layout.json gracefully
 #
-# Feature Update: v1.0.3
-# ✅ Added system_out tile to DEFAULT_CONFIG (full width at bottom)
+# Feature Update: v1.0.4
+# ✅ Added default weather tile to DEFAULT_CONFIG
 # ================================
 """
 
@@ -74,11 +74,22 @@ DEFAULT_CONFIG = [
         }
     },
     {
+        "id": "weather",
+        "type": "weather",
+        "hex_id": "WX",
+        "title": "Weather",
+        "size": [2, 4],  # 2 rows high, 4 columns wide
+        "api_key": "fff528869fbd42f69ec174849260601",  # User must replace
+        "location": "Grass Valley, CA",
+        "indoor_topic": "/home/temp/unit/A/08BD45F23A08",
+        "outdoor_topic": "/home/temp/unit/B/08BD45F23A08"
+    },
+    {
         "id": "system-out",
         "type": "system_out",
         "hex_id": "DEBUG",
         "title": "System Output",
-        "size": [2, 8],  # Full width (8 columns), 2 rows high
+        "size": [2, 8],  # Full width at bottom
         "bindings": {}
     }
 ]
@@ -93,7 +104,7 @@ def load_config():
     try:
         with open(CONFIG_FILE, "r", encoding="utf-8") as f:
             config = json.load(f)
-        # Basic validation — ensure it's a list
+		  # Basic validation — ensure it's a list										 
         if isinstance(config, list):
             return config
         else:

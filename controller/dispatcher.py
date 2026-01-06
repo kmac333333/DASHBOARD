@@ -1,15 +1,15 @@
 """
-Created on Thu Jan  3 16:04:05 2026
+Created on Thu Jan  6 16:04:05 2026
 @author: kmac3
 @author: Grok 4.0
 # ================================
 # controller/dispatcher.py
 # ================================
-# File version: v1.9.3
-# Sync'd to dashboard release: v3.8.6
+# File version: v1.9.4
+# Sync'd to dashboard release: v3.9.0
 # Description: DataDispatcher — central data bus for inbound sources
 #
-# Features:
+# Features:		   
 # ✅ Manages MQTT client lifecycle and message routing
 # ✅ Creates and manages SystemPropertySource instances
 # ✅ register_cb(key, callback) — appends callbacks for multi-sink support
@@ -17,12 +17,13 @@ Created on Thu Jan  3 16:04:05 2026
 # ✅ Graceful shutdown
 # ✅ dump_registrations() — detailed dump to system out tile
 #
-# Feature Update: v1.9.3
-# ✅ Fleshed out dump_registrations() with formatted output to system out tile
+# Feature Update: v1.9.4
+# ✅ Added weather polling source (WeatherAPI.com, 15-min interval)
 # ================================
 """
 
-from PyQt6.QtCore import QObject
+from PyQt6.QtCore import QObject, QTimer
+import requests
 
 from support.mqtt_client import MqttLiveClient
 from support.system_properties import SystemPropertySource
@@ -35,6 +36,7 @@ class DataDispatcher(QObject):
         self.mqtt_client = MqttLiveClient()
         self.callbacks = {}  # "channel_key": [callback1, callback2, ...]
         self.system_sources = []
+        self.weather_timer = None
 
     def register_cb(self, key: str, callback):
         """Register a callback for a named data channel — appends for multi-sink."""
@@ -66,12 +68,18 @@ class DataDispatcher(QObject):
             source.stop()
         self.system_sources.clear()
 
+        # Stop weather timer if running
+        if self.weather_timer:
+            self.weather_timer.stop()
+
         for config in configs:
+            # MQTT subscriptions
             for feed in config.get("bindings", {}).values():
                 if feed["type"] == "mqtt":
                     self.mqtt_client.add_topic(feed["topic"])
                     LOG3(200 + 30, f"Added MQTT topic subscription: {feed['topic']}")
 
+                # System properties
                 elif feed["type"] == "system_prop":
                     prop = feed["prop"]
                     getter = self.get_system_getter(prop)
@@ -81,11 +89,34 @@ class DataDispatcher(QObject):
                         source.data_ready.connect(lambda v, k=key: self._emit(k, v))
                         self.system_sources.append(source)
                         source.start()
-                        
-    def clear_callbacks(self):
-            """Clear all registered callbacks — called on reload to prevent deleted object errors."""
-            self.callbacks.clear()
-            LOG3(200 + 7, "Cleared all dispatcher callbacks for reload")
+						
+            # Weather tile — set up polling
+            if config.get("type") == "weather":
+                api_key = config.get("api_key", "")
+                location = config.get("location", "New York")
+                if api_key:
+                    self.setup_weather_polling(api_key, location)
+
+    def setup_weather_polling(self, api_key, location):
+        """Set up periodic weather API polling."""
+        if self.weather_timer:
+            self.weather_timer.stop()
+
+        self.weather_timer = QTimer()
+        self.weather_timer.timeout.connect(lambda: self.fetch_weather(api_key, location))
+        self.weather_timer.start(900000)  # 15 minutes
+        self.fetch_weather(api_key, location)  # Initial fetch
+
+    def fetch_weather(self, api_key, location):
+        url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=7&aqi=no&alerts=no"
+        try:
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            data = response.json()
+            self._emit("weather:data", data)
+            LOG3(200 + 40, "Weather data fetched and emitted")
+        except Exception as e:
+            LOG3(200 + 41, f"Weather API error: {e}")
 
     def get_system_getter(self, prop):
         import time
@@ -138,9 +169,11 @@ class DataDispatcher(QObject):
 
         # Emit to system out tile
         self._emit("debug:system_out", dump_text)
-
+							 
     def stop(self):
         LOG3(200 + 70, "Dispatcher stopping")
+        if self.weather_timer:
+            self.weather_timer.stop()
         for source in self.system_sources:
             source.stop()
         self.system_sources.clear()

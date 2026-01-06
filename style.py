@@ -35,7 +35,6 @@ HEADER_GRADIENT = f"""
     border-top-right-radius: {TILE_RADIUS};
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    overflow: hidden;
     border-bottom: 1px solid {TILE_BORDER};
 """
 
