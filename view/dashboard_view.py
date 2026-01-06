@@ -32,7 +32,7 @@ from view.tiles.multiline import MultilineTile
 from view.tiles.dual_text import DualTextTile
 from view.tiles.system_out import SystemOutTile
 from config import load_config
-from style import DASHBOARD_STYLE, UNIFIED_TILE_STYLE, SCROLL_AREA_STYLE
+from style import DASHBOARD_STYLE, SCROLL_AREA_STYLE
 
 
 # Tile factory
@@ -60,7 +60,7 @@ class DashboardView(QWidget):
         self.setObjectName("dashboard-view")
 
         # All styling from style.py
-        self.setStyleSheet(DASHBOARD_STYLE + UNIFIED_TILE_STYLE)
+        self.setStyleSheet(DASHBOARD_STYLE )
 
         self.tiles = {}
 

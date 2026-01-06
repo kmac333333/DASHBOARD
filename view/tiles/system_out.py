@@ -5,7 +5,7 @@ Created on Thu Jan  4 16:04:05 2026
 # ================================
 # view/tiles/system_out.py
 # ================================
-# File version: v1.0.3
+# File version: v1.0.4
 # Sync'd to dashboard release: v3.9.0
 # Description: SystemOutTile — scrollable console-style tile for debug/system output
 #
@@ -20,7 +20,8 @@ Created on Thu Jan  4 16:04:05 2026
 #
 # Feature Update: v1.0.3
 # ✅ Added objectName() naming for tile, header, console
-													 
+# Feature Update: v1.0.4
+# ✅ Refactored to use unified BaseTile (header in base, only body content here)													 
 # ================================
 """
 
@@ -40,56 +41,11 @@ from style import (
 
 class SystemOutTile(BaseTile):
     def __init__(self, config, dispatcher, parent=None):
-        super().__init__(parent)
-        self.config = config
-        self.dispatcher = dispatcher
-        self.tile_id = config["id"]
-        self.height_tiles = config["size"][0]
-        self.width_tiles = config["size"][1]
-        self.update_geometry()
-        # Self-naming for hierarchy dump
-        self.setObjectName(f"tile-{self.tile_id}")
-
-        #self.setMinimumSize(self.width_tiles * 160, self.height_tiles * 160)
-
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(0)
-
-        # Header
-        header_container = QWidget()
-        header_container.setObjectName(f"header-{self.tile_id}")
-        header_container.setFixedHeight(90)
-        header_layout = QVBoxLayout(header_container)
-        header_layout.setContentsMargins(20, 8, 20, 8)
-        header_layout.setSpacing(10)
-        header_container.setStyleSheet(HEADER_GRADIENT)
-        #header_container.setStyleSheet(HEADER_GRADIENT)
-
-        title_container = QWidget()
-        title_layout = QVBoxLayout(title_container)
-        title_layout.setSpacing(0)
-        title_layout.setContentsMargins(0, 0, 0, 0)
-
-        self.hex_id_label = QLabel("DEBUG")
-        self.hex_id_label.setObjectName(f"hex-{self.tile_id}")
-        self.hex_id_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
-        self.hex_id_label.setStyleSheet(HEADER_STYLE_LINE_1)
-
-        self.title_label = QLabel(config.get("title", "System Out"))
-        self.title_label.setObjectName(f"title-{self.tile_id}")
-        self.title_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignBottom)
-        self.title_label.setStyleSheet(HEADER_STYLE_LINE_2)
-        self.title_label.setWordWrap(False)
-
-        title_layout.addWidget(self.hex_id_label)
-        title_layout.addWidget(self.title_label)
-
-        header_layout.addWidget(title_container)
-
-        layout.addWidget(header_container)
+        super().__init__(config, dispatcher, parent)
 
         # Body — scrollable text output
+        body_layout = self.body.layout()
+        body_layout.setContentsMargins(10, 10, 10, 10)
         self.text_edit = QTextEdit()
         self.text_edit.setObjectName(f"console-{self.tile_id}")
         self.text_edit.setReadOnly(True)
@@ -102,7 +58,7 @@ class SystemOutTile(BaseTile):
         """)
         self.text_edit.setPlainText("System output ready...\n")
 
-        layout.addWidget(self.text_edit, stretch=1)
+        body_layout.addWidget(self.text_edit, stretch=1)
 
         # Register for debug output
         key = "debug:system_out"
