@@ -92,7 +92,7 @@ class AddTileDialog(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.9.0 – January 04, 2026")
+        self.setWindowTitle(f"Dynamic Indexed MQTT Dashboard – v3.10.0 – January 05, 2026")
         self.setGeometry(100, 100, 1600, 800)
 
         self.controller = DashboardController(self)

@@ -82,7 +82,7 @@ class BaseTile(QWidget):
         self.body.setObjectName(f"body-{self.tile_id}")
         self.body.setStyleSheet(BODY_STYLE)
         body_layout = QVBoxLayout(self.body)
-        body_layout.setContentsMargins(20, 20, 20, 20)
+        body_layout.setContentsMargins(5, 5, 5, 5)
         layout.addWidget(self.body, stretch=1)
 
     def edit_title(self, event):

@@ -45,7 +45,7 @@ class MultilineTile(BaseTile):
         
         # Body — 5 lines with label:value
         body_layout = self.body.layout()
-        body_layout.setSpacing(12)
+        body_layout.setSpacing(0)       # spacing between widget boundaries
 
         self.value_labels = []
 
@@ -54,18 +54,18 @@ class MultilineTile(BaseTile):
 
         for i in range(5):
             h_layout = QHBoxLayout()
-            h_layout.setSpacing(10)
+            h_layout.setSpacing(5)
 
             prop = props[i]
             label_text = prop.replace("_", " ").title() if prop else f"Line {i+1}"
             label = QLabel(label_text + ":")
             label.setObjectName(f"label-{self.tile_id}-line{i+1}")
-            label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}")
+            label.setStyleSheet(f"color: {TEXT_SECONDARY}; {FONT_LABEL}; padding: 1px 5px 1px 5px; /* top, right, bottom, left */")
             h_layout.addWidget(label)
 
             value = QLabel("—")
             value.setObjectName(f"value-{self.tile_id}-line{i+1}")
-            value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_VALUE}")
+            value.setStyleSheet(f"color: {TEXT_PRIMARY}; {FONT_VALUE}; padding: 1px 5px 1px 5px; /* top, right, bottom, left */")
             value.setWordWrap(True)
             h_layout.addWidget(value, stretch=1)
 

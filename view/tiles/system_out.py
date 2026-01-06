@@ -45,7 +45,7 @@ class SystemOutTile(BaseTile):
 
         # Body — scrollable text output
         body_layout = self.body.layout()
-        body_layout.setContentsMargins(10, 10, 10, 10)
+        body_layout.setContentsMargins(5, 5, 5, 5)
         self.text_edit = QTextEdit()
         self.text_edit.setObjectName(f"console-{self.tile_id}")
         self.text_edit.setReadOnly(True)
@@ -62,9 +62,7 @@ class SystemOutTile(BaseTile):
 
         # Register for debug output
         key = "debug:system_out"
-        def output_callback(message: str):
-																		
-												  
+        def output_callback(message: str):																				  
             self.append_output(message)
         self.dispatcher.register_cb(key, output_callback)
 

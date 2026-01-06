@@ -44,7 +44,7 @@ HEADER_STYLE_LINE_1 = f"color: #FFFFFF; font-size: 40px; font-weight: bold; font
 HEADER_STYLE_LINE_2 = f"color: rgba(255, 255, 255, 180); font-size: 20px; font-family: {FONT_FAMILY};"
 
 # Body style
-BODY_STYLE = f"color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: {FONT_FAMILY}; padding: 30px;"
+BODY_STYLE = f"color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: {FONT_FAMILY}; padding: 5px;"
 # Text colors
 TEXT_HEADER = "#FFFFFF"
 TEXT_SUBTITLE = "#BBBBBB"
@@ -70,10 +70,6 @@ HEADER_STYLE_LINE_2 = f"""
     background: {TILE_BG};
     border: 0;
     border-radius : 0;
-"""
-#tile body
-BODY_STYLE = f"""
-    color: {TEXT_PRIMARY}; {FONT_BODY};
 """
 
 # Menu bar style
@@ -123,4 +119,5 @@ SCROLL_AREA_STYLE = "QScrollArea { border: none; background: transparent; }"
 #"""
 
 # Dashboard stylesheet
-DASHBOARD_STYLE = f"background-color: {DASHBOARD_BG};"
+#DASHBOARD_STYLE = f"background-color: {DASHBOARD_BG}; border: 2px solid blue;"
+DASHBOARD_STYLE = f"background-color: {DASHBOARD_BG}; border: 0px"

@@ -80,8 +80,8 @@ class DashboardView(QWidget):
         self.container = QWidget()
         self.container.setObjectName("tile-container")
         self.grid = QGridLayout(self.container)
-        self.grid.setSpacing(30)
-        self.grid.setContentsMargins(30, 30, 30, 30)
+        self.grid.setSpacing(10)
+        self.grid.setContentsMargins(10, 10, 10, 10)
         self.scroll_area.setWidget(self.container)
 
     def on_external_layout_change(self):
