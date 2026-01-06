@@ -1,0 +1,800 @@
+{
+  "objectName": "<unnamed>",
+  "className": "MainWindow",
+  "isWidget": true,
+  "styleSheet": "",
+  "children": [
+    {
+      "objectName": "_layout",
+      "className": "QMainWindowLayout",
+      "isWidget": false,
+      "styleSheet": "",
+      "children": []
+    },
+    {
+      "objectName": "dashboard-view",
+      "className": "DashboardView",
+      "isWidget": true,
+      "styleSheet": "background-color: #19232D; border: 2px solid blue;",
+      "children": [
+        {
+          "objectName": "<unnamed>",
+          "className": "QVBoxLayout",
+          "isWidget": false,
+          "styleSheet": "",
+          "children": []
+        },
+        {
+          "objectName": "scroll-area",
+          "className": "QScrollArea",
+          "isWidget": true,
+          "styleSheet": "QScrollArea { border: none; background: transparent; }",
+          "children": [
+            {
+              "objectName": "qt_scrollarea_viewport",
+              "className": "QWidget",
+              "isWidget": true,
+              "styleSheet": "",
+              "children": [
+                {
+                  "objectName": "tile-container",
+                  "className": "QWidget",
+                  "isWidget": true,
+                  "styleSheet": "",
+                  "children": [
+                    {
+                      "objectName": "<unnamed>",
+                      "className": "QGridLayout",
+                      "isWidget": false,
+                      "styleSheet": "",
+                      "children": []
+                    },
+                    {
+                      "objectName": "tile-system-health",
+                      "className": "MultilineTile",
+                      "isWidget": true,
+                      "styleSheet": "",
+                      "children": [
+                        {
+                          "objectName": "<unnamed>",
+                          "className": "QVBoxLayout",
+                          "isWidget": false,
+                          "styleSheet": "",
+                          "children": []
+                        },
+                        {
+                          "objectName": "header-system-health",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n                                stop:0 #5294E2,\n                                stop:0.5 #3D6FB0,\n                                stop:1 #2B2B2B);\n    border-top-left-radius: 5px;\n    border-top-right-radius: 5px;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    overflow: hidden;\n    border-bottom: 1px solid #5294E2;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QHBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QWidget",
+                              "isWidget": true,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QVBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "hex-system-health",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #FFFFFF; font-size: 40px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "title-system-health",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #BBBBBB; font-size: 20px; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n    border-radius : 0;\n",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "objectName": "body-system-health",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: Consolas, 'Courier New', monospace; padding: 30px;;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QVBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "objectName": "label-system-health-line1",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-system-health-line1",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #FFFFFF; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "label-system-health-line2",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-system-health-line2",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #FFFFFF; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "label-system-health-line3",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-system-health-line3",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #FFFFFF; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "label-system-health-line4",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-system-health-line4",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #FFFFFF; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "label-system-health-line5",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-system-health-line5",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #FFFFFF; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "objectName": "tile-living-temp",
+                      "className": "SimpleTextTile",
+                      "isWidget": true,
+                      "styleSheet": "",
+                      "children": [
+                        {
+                          "objectName": "<unnamed>",
+                          "className": "QVBoxLayout",
+                          "isWidget": false,
+                          "styleSheet": "",
+                          "children": []
+                        },
+                        {
+                          "objectName": "header-living-temp",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n                                stop:0 #5294E2,\n                                stop:0.5 #3D6FB0,\n                                stop:1 #2B2B2B);\n    border-top-left-radius: 5px;\n    border-top-right-radius: 5px;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    overflow: hidden;\n    border-bottom: 1px solid #5294E2;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QHBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QWidget",
+                              "isWidget": true,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QVBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "hex-living-temp",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #FFFFFF; font-size: 40px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "title-living-temp",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #BBBBBB; font-size: 20px; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n    border-radius : 0;\n",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "objectName": "body-living-temp",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: Consolas, 'Courier New', monospace; padding: 30px;;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QVBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "body-living-temp",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "\n    color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: Consolas, 'Courier New', monospace; padding: 30px;;\n",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "objectName": "tile-dual-temp",
+                      "className": "DualTextTile",
+                      "isWidget": true,
+                      "styleSheet": "",
+                      "children": [
+                        {
+                          "objectName": "<unnamed>",
+                          "className": "QVBoxLayout",
+                          "isWidget": false,
+                          "styleSheet": "",
+                          "children": []
+                        },
+                        {
+                          "objectName": "header-dual-temp",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n                                stop:0 #5294E2,\n                                stop:0.5 #3D6FB0,\n                                stop:1 #2B2B2B);\n    border-top-left-radius: 5px;\n    border-top-right-radius: 5px;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    overflow: hidden;\n    border-bottom: 1px solid #5294E2;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QHBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QWidget",
+                              "isWidget": true,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QVBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "hex-dual-temp",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #FFFFFF; font-size: 40px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "title-dual-temp",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #BBBBBB; font-size: 20px; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n    border-radius : 0;\n",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "objectName": "body-dual-temp",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: Consolas, 'Courier New', monospace; padding: 30px;;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QVBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QHBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                }
+                              ]
+                            },
+                            {
+                              "objectName": "label-dual-temp-primary",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-dual-temp-primary",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #22c55e; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "label-dual-temp-secondary",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #BBBBBB; font-size: 20px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            },
+                            {
+                              "objectName": "value-dual-temp-secondary",
+                              "className": "QLabel",
+                              "isWidget": true,
+                              "styleSheet": "color: #ef4444; font-size: 22px; font-family: Consolas, 'Courier New', monospace;",
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "objectName": "tile-system-out",
+                      "className": "SystemOutTile",
+                      "isWidget": true,
+                      "styleSheet": "",
+                      "children": [
+                        {
+                          "objectName": "<unnamed>",
+                          "className": "QVBoxLayout",
+                          "isWidget": false,
+                          "styleSheet": "",
+                          "children": []
+                        },
+                        {
+                          "objectName": "header-system-out",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,\n                                stop:0 #5294E2,\n                                stop:0.5 #3D6FB0,\n                                stop:1 #2B2B2B);\n    border-top-left-radius: 5px;\n    border-top-right-radius: 5px;\n    border-bottom-left-radius: 0;\n    border-bottom-right-radius: 0;\n    overflow: hidden;\n    border-bottom: 1px solid #5294E2;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QHBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QWidget",
+                              "isWidget": true,
+                              "styleSheet": "",
+                              "children": [
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QVBoxLayout",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "hex-system-out",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #FFFFFF; font-size: 40px; font-weight: bold; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "title-system-out",
+                                  "className": "QLabel",
+                                  "isWidget": true,
+                                  "styleSheet": "\n    color: #BBBBBB; font-size: 20px; font-family: Consolas, 'Courier New', monospace;;\n    background: #2B2B2B;\n    border: 0;\n    border-radius : 0;\n",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        {
+                          "objectName": "body-system-out",
+                          "className": "QWidget",
+                          "isWidget": true,
+                          "styleSheet": "\n    color: #FFFFFF; font-size: 48px; font-weight: bold; font-family: Consolas, 'Courier New', monospace; padding: 30px;;\n",
+                          "children": [
+                            {
+                              "objectName": "<unnamed>",
+                              "className": "QVBoxLayout",
+                              "isWidget": false,
+                              "styleSheet": "",
+                              "children": []
+                            },
+                            {
+                              "objectName": "console-system-out",
+                              "className": "QTextEdit",
+                              "isWidget": true,
+                              "styleSheet": "\n            background-color: #1e1e1e;\n            color: #d4d4d4;\n            font-family: 'Courier New', monospace;\n            font-size: 14px;\n            padding: 10px;\n        ",
+                              "children": [
+                                {
+                                  "objectName": "qt_scrollarea_viewport",
+                                  "className": "QWidget",
+                                  "isWidget": true,
+                                  "styleSheet": "",
+                                  "children": []
+                                },
+                                {
+                                  "objectName": "qt_scrollarea_hcontainer",
+                                  "className": "QWidget",
+                                  "isWidget": true,
+                                  "styleSheet": "",
+                                  "children": [
+                                    {
+                                      "objectName": "<unnamed>",
+                                      "className": "QScrollBar",
+                                      "isWidget": true,
+                                      "styleSheet": "",
+                                      "children": []
+                                    },
+                                    {
+                                      "objectName": "<unnamed>",
+                                      "className": "QBoxLayout",
+                                      "isWidget": false,
+                                      "styleSheet": "",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "objectName": "qt_scrollarea_vcontainer",
+                                  "className": "QWidget",
+                                  "isWidget": true,
+                                  "styleSheet": "",
+                                  "children": [
+                                    {
+                                      "objectName": "<unnamed>",
+                                      "className": "QScrollBar",
+                                      "isWidget": true,
+                                      "styleSheet": "",
+                                      "children": []
+                                    },
+                                    {
+                                      "objectName": "<unnamed>",
+                                      "className": "QBoxLayout",
+                                      "isWidget": false,
+                                      "styleSheet": "",
+                                      "children": []
+                                    }
+                                  ]
+                                },
+                                {
+                                  "objectName": "<unnamed>",
+                                  "className": "QWidgetTextControl",
+                                  "isWidget": false,
+                                  "styleSheet": "",
+                                  "children": [
+                                    {
+                                      "objectName": "<unnamed>",
+                                      "className": "QTextDocument",
+                                      "isWidget": false,
+                                      "styleSheet": "",
+                                      "children": [
+                                        {
+                                          "objectName": "<unnamed>",
+                                          "className": "QTextDocumentLayout",
+                                          "isWidget": false,
+                                          "styleSheet": "",
+                                          "children": [
+                                            {
+                                              "objectName": "<unnamed>",
+                                              "className": "QTextImageHandler",
+                                              "isWidget": false,
+                                              "styleSheet": "",
+                                              "children": []
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "objectName": "<unnamed>",
+                                          "className": "QTextFrame",
+                                          "isWidget": false,
+                                          "styleSheet": "",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "objectName": "qt_scrollarea_hcontainer",
+              "className": "QWidget",
+              "isWidget": true,
+              "styleSheet": "",
+              "children": [
+                {
+                  "objectName": "<unnamed>",
+                  "className": "QScrollBar",
+                  "isWidget": true,
+                  "styleSheet": "",
+                  "children": []
+                },
+                {
+                  "objectName": "<unnamed>",
+                  "className": "QBoxLayout",
+                  "isWidget": false,
+                  "styleSheet": "",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "objectName": "qt_scrollarea_vcontainer",
+              "className": "QWidget",
+              "isWidget": true,
+              "styleSheet": "",
+              "children": [
+                {
+                  "objectName": "<unnamed>",
+                  "className": "QScrollBar",
+                  "isWidget": true,
+                  "styleSheet": "",
+                  "children": []
+                },
+                {
+                  "objectName": "<unnamed>",
+                  "className": "QBoxLayout",
+                  "isWidget": false,
+                  "styleSheet": "",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "objectName": "<unnamed>",
+      "className": "QMenuBar",
+      "isWidget": true,
+      "styleSheet": "\n    QMenuBar {\n        background-color: #19232D;\n        color: #DDDDDD;\n        padding: 6px;\n        border-bottom: 1px solid #404040;\n    }\n    QMenuBar::item {\n        padding: 6px 18px;\n        background: transparent;\n    }\n    QMenuBar::item:selected {\n        background-color: #5294E2;\n        border-radius: 6px;\n        color: white;\n    }\n    QMenu {\n        background-color: #2B2B2B;\n        color: #DDDDDD;\n        border: 1px solid #404040;\n    }\n    QMenu::item {\n        padding: 6px 30px 6px 36px;\n    }\n    QMenu::item:selected {\n        background-color: #5294E2;\n        color: white;\n    }\n",
+      "children": [
+        {
+          "objectName": "qt_menubar_ext_button",
+          "className": "QToolButton",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": []
+        },
+        {
+          "objectName": "<unnamed>",
+          "className": "QMenu",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": [
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "objectName": "<unnamed>",
+          "className": "QMenu",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": [
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "objectName": "<unnamed>",
+          "className": "QMenu",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": [
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "objectName": "<unnamed>",
+          "className": "QMenu",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": [
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            },
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            }
+          ]
+        },
+        {
+          "objectName": "<unnamed>",
+          "className": "QMenu",
+          "isWidget": true,
+          "styleSheet": "",
+          "children": [
+            {
+              "objectName": "<unnamed>",
+              "className": "QAction",
+              "isWidget": false,
+              "styleSheet": "",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
